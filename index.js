@@ -4,7 +4,7 @@ window.addEventListener("DOMContentLoaded", function () {
   let counter = 0;
   let score = 0;
   let createdNum = null;
-  let chest = false;
+  let chestOpen = false;
   const chestContainer = document.getElementById("chests");
 
   // image array med 3 bilder
@@ -18,22 +18,28 @@ window.addEventListener("DOMContentLoaded", function () {
 
   const chestArrayObject = [
     {
+      id: 0,
       name: "first",
       value: 1,
       diamond: false,
-      image: "images/chest-closed.png",
+      image: images[0],
     },
     {
+      id: 1,
       name: "second",
-      value: 1,
+      value: 2,
       diamond: false,
-      image: "images/chest-jewel.png",
+      image: images[1],
     },
-    { name: "third", value: 1,
-     diamond: false,
-     image: "images/chest-open.png" },
+    {
+      id: 2,
+      name: "third",
+      value: 3,
+      diamond: false,
+      image: images[2],
+    },
   ];
-  console.log(images);
+  //console.log(images);
   console.log(chestArrayObject);
 
   /*
@@ -44,23 +50,21 @@ window.addEventListener("DOMContentLoaded", function () {
     initGameUI();
   }
 
-  function initGameUI() {
-    // Call functions that creates the Game UI
+  function randomFunction() {
+    createdNum = Math.floor(Math.random() * 3 + 1);
+  }
 
+  function initGameUI() {
     initChests();
     initScoreBoard();
     initRefreshButton();
   }
 
-  function randomFunction() {
-    createdNum = Math.floor(Math.random() * 3 + 1);
-  }
-
   function initChests() {
-    chest = false;
-    chestArrayObject.forEach(function (chest) {
+    chestOpen = false;
+    chestArrayObject.forEach((chest) => {
       const chestImage = document.createElement("img");
-      chestImage.src = chest.image;
+      chestImage.src = images[0]
       chestImage.style.width = "200px";
       chestImage.style.height = "150px";
       chestImage.style.margin = "20px";
@@ -71,7 +75,7 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 
   function initScoreBoard() {
-    var scoreBoard = document.createElement("section");
+    let scoreBoard = document.createElement("section");
     scoreBoard.id = "scoreId";
     wrapper.appendChild(scoreBoard);
     let scoreText = document.createElement("p");
@@ -79,12 +83,12 @@ window.addEventListener("DOMContentLoaded", function () {
     scoreText.style.color = "#fff";
     scoreText.style.textAlign = "center";
     scoreBoard.appendChild(scoreText);
-    scoreText.innerText = `Score: ${score}`;
+    scoreText.innerText = score;
   }
 
   function changeScore(newS) {
     score += newS;
-    document.getElementById("result").innerText = `Score: ${score}`;
+    document.getElementById("result").innerText = score;
   }
 
   function initRefreshButton() {
@@ -93,8 +97,8 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 
   function chestClicked(e) {
-    if (chest === false) {
-      chest = true;
+    if (chestOpen === false) {
+      chestOpen = true;
       if (e.target.id === createdNum) {
         e.target.diamond = true;
         e.target.src = "images/chest-jewel.png";
@@ -118,8 +122,8 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 
   function cleanChests() {
-    chestArrayObject.forEach((removeChest) => {
-      chestContainer.removeChild(document.getElementById(removeChest.value));
+    chestArrayObject.forEach((chest) => {
+      chestContainer.removeChild(document.getElementById(chest.value));
     });
   }
   window.onload = init;
